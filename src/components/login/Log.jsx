@@ -4,6 +4,8 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill, RiAccountCircleFill } from "react-icons/ri";
 import { BsEye} from "react-icons/bs";
 import { FaRegEye } from "react-icons/fa";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './log.css';
 
 const Log = () => {
@@ -12,7 +14,9 @@ const Log = () => {
     username: "",
     password: "",
   });
-  const [showPassword, setShowPassword] = useState(false); // State variable to track password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const sanitizeInput = (input) => {
     let sanitizedInput = input.trim();
@@ -36,12 +40,12 @@ const Log = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const sanitizedFormData = {
       username: sanitizeInput(formData.username),
       password: sanitizeInput(formData.password),
     };
-
 
     const isSafeInput = Object.values(formData).every(
       (value) => typeof value === "string"
@@ -50,6 +54,7 @@ const Log = () => {
     if (!isSafeInput) {
       console.error("Input validation failed: Non-string values detected.");
       window.alert("Input validation failed: Non-string values detected.");
+      setIsLoading(false);
       return;
     }
 
@@ -62,42 +67,29 @@ const Log = () => {
     })
     .then((response) => {
       if (!response.ok) {
-        alert("Invalid Username or Password");
+        throw new Error("Invalid Username or Password");
       }
-      console.log(response); // Log the JWT cookie
       return response.json();
     })
       .then((data) => {
-        console.log(data);
-        if (data === "Invalid username And Password") {
-          window.alert("Invalid username And Password");
-          console.log("Invalid username And Password");
-          return;
-        } else {
-          if (data.username) {
-            // Assuming the username is returned in the response
-            window.alert("Login successful! Welcome, " + data.username);
-            setIsLogin(true);
-            window.location.href = '/admin';
-            localStorage.setItem('jwtToken',data.jwtToken);
-            localStorage.setItem('username',data.username);
-            // console.log(localStorage.getItem('jwtToken'));
-          } else {
-            console.error("Invalid username And Password");
-          }
-        }
+        toast.success("Login successful! Welcome, " + data.username);
+        setIsLogin(true);
+        localStorage.setItem('jwtToken', data.jwtToken);
+        localStorage.setItem('username', data.username);
+        navigate('/admin');
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error("Error:", error.message);
+        toast.error("Invalid Username or Password");
+        setIsLoading(false);
       });
   };
 
   return (
     <>
+      <ToastContainer />
       <h1 className="display-4 text-white text-center fw-bold fst-italic">Bill Management System</h1>
-      {isLogin ? (
-        window.location.href = '/admin'
-      ) : null}
+      {isLogin && <>{navigate('/admin')}</>}
 
       {!isLogin && (
         <div className=" justify-content-center d-flex flex-column p-5 rounded-2 siva">
@@ -120,7 +112,7 @@ const Log = () => {
                 id="exampleInputEmail1"
                 name="username"
                 aria-describedby="emailHelp"
-                value={formData.email}
+                value={formData.username}
                 onChange={handleChange}
                 required
               />
@@ -160,8 +152,8 @@ const Log = () => {
               </div>
             </div>
             <div className="justify-content-between d-flex">
-              <button type="submit" className="btn btn-outline-primary ms-auto me-auto mt-5">
-                Submit
+              <button type="submit" className="btn btn-outline-primary ms-auto me-auto mt-5" disabled={isLoading}>
+                {isLoading ? <div className="spinner-border text-light" role="status"><span className="visually-hidden">Loading...</span></div> : "Submit"}
               </button>
             </div>
           </form>

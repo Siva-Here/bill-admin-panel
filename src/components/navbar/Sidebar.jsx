@@ -63,10 +63,10 @@ function Sidebar() {
             </a>
             <ul id="auth" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
               <li className="sidebar-item mt-3">
-                <a href="#" className="sidebar-link">Add User</a>
+                <NavLink to="/admin/addUser" className="sidebar-link">Register User</NavLink>
               </li>
               <li className="sidebar-item mt-3">
-                <a href="#" className="sidebar-link">Add Admin</a>
+                <NavLink to="/admin/addAdmin" className="sidebar-link">Register Admin</NavLink>
               </li>
             </ul>
           </li>
@@ -99,9 +99,9 @@ function Sidebar() {
           </li>
         </ul>
         <div className={`sidebar-footer mb-3 wrapper ${isExpanded ? '' : 'd-none'}`} onClick={handleLogOut}>
-          <NavLink to='/login'>
+          <NavLink to='/login' className='text-white ms-4 mb-3 fs-6'>
               <TbLogout2 className='fs-3 text-white icons'/>
-              <span class='navbar-link text-decoration-none ms-2 text-white' className='ms-3 mb-5'>Logout</span>
+              <span className='text-white ms-4 fs-6'> LogOut</span>
           </NavLink>
         </div>
       </aside>
