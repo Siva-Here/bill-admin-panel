@@ -8,6 +8,10 @@ import { BillContext } from '../../App';
 
 const Home = () => {
     const {data, setData} = useContext(BillContext);
+    let [users, setUsers] = useState([]);
+
+    let [sorted, setSorted] = useState(true);
+    let [user, setUser] = useState('');
 
     const [pending, setPending] = useState(0);
     const [accepted, setAccepted] = useState(0);
@@ -26,7 +30,7 @@ const Home = () => {
         if (pending !== 0 || accepted !== 0 || rejected !== 0) {
             return <PieChart labels = {['pending','accepted','rejected']} data = {[pending, accepted, rejected]} className="ms-auto"/>;
         } else {
-            return null;
+            return <PieChart labels = {['pending','accepted','rejected']} data = {[pending, accepted, rejected]} className="ms-auto"/>;
         }
     }
 
@@ -36,6 +40,62 @@ const Home = () => {
         } else {
             return null;
         }
+    }
+
+    const handleUserChange = (e) => {
+        let pendingCount = 0;
+        let acceptedCount = 0;
+        let rejectedCount = 0;
+
+        let pendingAmount = 0;
+        let acceptedAmount = 0;
+        let rejectedAmount = 0;
+        
+        let dataByType = {};
+        let dataByTypeAmount = {};
+
+        categories.forEach((label)=>{
+            dataByType[label] = 0;
+            dataByTypeAmount[label] = 0;
+        })
+
+        data.forEach((data1) => {
+            if(data1.uploadedBy==e.target.value || e.target.value==""){
+                if (data1.status === 'pending') {
+                    pendingCount++;
+                    pendingAmount += data1.amount;
+                } else if (data1.status === 'accepted') {
+                    acceptedCount++;
+                    acceptedAmount += data1.amount;
+                } else if (data1.status === 'rejected') {
+                    rejectedCount++;
+                    rejectedAmount += data1.amount;
+                }
+                dataByType[data1.type]+=1;
+                dataByTypeAmount[data1.type]+=data1.amount;
+            }
+        });
+
+        setPending(0);
+        setAccepted(0);
+        setRejected(0);
+        setDataByType({});
+        setDataByTypeAmount({});
+        setPendingBill(0);
+        setAcceptedBill(0);
+        setRejectedBill(0);
+
+        setTimeout(()=>{
+            setPending(pendingCount);
+            setAccepted(acceptedCount);
+            setRejected(rejectedCount);
+            setDataByType(dataByType);
+            setDataByTypeAmount(dataByTypeAmount);
+            setPendingBill(pendingAmount);
+            setAcceptedBill(acceptedAmount);
+            setRejectedBill(rejectedAmount);
+        },10)
+
     }
     
     
@@ -104,12 +164,45 @@ const Home = () => {
         };
     
         fetchData();
+
+        const fetchUsers = async () => {
+            try {
+              const token = localStorage.getItem('jwtToken');
+              const response = await axios.get(
+                'https://bill-server-hiq9.onrender.com/admin/users',
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              let responseData = response.data;
+              let arr = [];
+              responseData.forEach((user)=>{
+                console.log(user.username);
+                arr.push(user.username);
+              })
+              setUsers(arr);
+              }catch(err){
+                console.log(err);
+              }
+          }
+          fetchUsers();
       }, []);
     
     return (
         <BillContext.Provider value={{ data }}>
-        <div>
+        <div className='row'>
             <h1 className='display-3 text-white text-center mb-5' style={{marginTop: "50px"}}>Welcome To Admin Dashboard</h1>
+            <select className='custom-dropdown p-2 rounded-2 col-6 ms-auto me-auto' onChange={(e)=>handleUserChange(e)}>
+                    <option value="" selected>Select User Stats</option>
+                    {users.map((user, index)=>{
+                    return(
+                        <option value={user} key={index}>{user}</option>
+                    )
+                    })}
+                </select>
             <div className='d-flex justify-content-evenly col-gap-5 row-gap-5 align-items-center row mt-5'>
                 <div className="card-outer-div text-white mb-3 col-10 col-lg-5">
                     <div className="row g-0">
@@ -124,10 +217,21 @@ const Home = () => {
                             </div>
                         </div>
                         <div className="col-md-7 ">
-                            {renderPieChart1()}
+                            {(pending+rejected+accepted)!=0 && renderPieChart1()}
+                            {(pending+rejected+accepted)==0 && renderPieChart1()}
                         </div>
                     </div>
                     <h6 className='text-center text-info mt-5'>fig. Total number of bills</h6>
+                </div>
+                <div className="card-outer-div text-white mb-3 col-10 col-lg-5" style={{padding: "50px 20px"}}>
+                <div className="row g-0">
+                        <h6 className="card-title">Amount spent &#8377; {pendingBill+rejectedBill+acceptedBill}</h6>
+                        <div className="col-12">
+                        {(pendingBill+acceptedBill+rejectedBill)!=0 && <BarPlot label={'Amount spend by status'} labels={['pending','accepted','rejected']} data={[pendingBill, acceptedBill, rejectedBill]} className="ms-auto"/>}
+                        {(pendingBill+acceptedBill+rejectedBill)==0 && <BarPlot label={'Amount spend by status'} labels={['pending','accepted','rejected']} data={[0, 0, 0]} className="ms-auto"/>}
+                        </div>
+                    </div>
+                    <h6 className='text-center text-info mt-5'>fig. Amount spent by status</h6>
                 </div>
                 <div className="card-outer-div text-white mb-3 col-10 col-lg-5">
                     <div className="row g-0">
@@ -150,17 +254,8 @@ const Home = () => {
                     <h6 className='text-center text-info mt-5'>fig. Total Bills by category</h6>
                 </div>
                 <div className="card-outer-div text-white mb-3 col-10 col-lg-5" style={{padding: "50px 20px"}}>
-                <div className="row g-0">
-                        <h6 className="card-title">Amount spent(in &#8377;)</h6>
-                        <div className="col-12">
-                        {pendingBill !== 0 && <BarPlot label={'Amount spend by status'} labels={['pending','accepted','rejected']} data={[pendingBill, acceptedBill, rejectedBill]} className="ms-auto"/>}
-                        </div>
-                    </div>
-                    <h6 className='text-center text-info mt-5'>fig. Amount spent by status</h6>
-                </div>
-                <div className="card-outer-div text-white mb-3 col-10 col-lg-5" style={{padding: "50px 20px"}}>
                     <div className="row g-0">
-                        <h6 className="card-title">Amount spent(in &#8377;)</h6>
+                        <h6 className="card-title">Amount spent &#8377; {pendingBill+rejectedBill+acceptedBill}</h6>
                         <div className="col-12">
                         {Object.values(dataByTypeAmount).length > 0 && <BarPlot label={'Amount spend by category'} labels={categories} data={Object.values(dataByTypeAmount)} className="ms-auto"/>}
                         </div>

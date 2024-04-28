@@ -8,6 +8,7 @@ import Upload from './components/upload-component/Upload';
 import UserStats from './components/bills/bill-stats/UserStats';
 import MainAddUser from './components/register/MainAddUser';
 import MainReg from './components/register/MainReg';
+import Contact from './components/contact/Contact';
 
 const BillContext = createContext();
 
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/admin/addUser" element={<MainAddUser />} />
                     <Route path="/admin/addAdmin" element={<MainReg />} />
                     <Route path="/upload" element={<Upload />} />
+                    <Route path="/contact" element={<Contact />} />
                     <Route path="/admin/bills" element={<BillsPage />} />
                     <Route path="/admin/users" element={<UserStats />} />
                     <Route path="*" element={<h1 className='text-white'>Page Not Found</h1>} />

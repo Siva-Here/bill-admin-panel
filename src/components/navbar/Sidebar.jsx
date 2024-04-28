@@ -70,7 +70,7 @@ function Sidebar() {
               </li>
             </ul>
           </li>
-          <li className="sidebar-item mt-3">
+          {/* <li className="sidebar-item mt-3">
             <a href="#" className="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
               data-bs-target="#dash" aria-expanded="false" aria-controls="dash">
               <MdDashboard className='fs-3 text-white icons'/>
@@ -84,6 +84,12 @@ function Sidebar() {
                 <a href="#" className="sidebar-link">Category Stats</a>
               </li>
             </ul>
+          </li> */}
+          <li className="sidebar-item mt-3">
+            <NavLink to="/contact" className="sidebar-link">
+              <i className="lni lni-popup"></i>
+              <span className='ms-3'>Contact Us</span>
+            </NavLink>
           </li>
           <li className="sidebar-item mt-3">
             <a href="#" className="sidebar-link">

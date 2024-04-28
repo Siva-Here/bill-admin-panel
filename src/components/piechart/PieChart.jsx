@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto'
 
 const PieChart = (props) => {
+    console.log(props.data);
     const chartRef = useRef(null);
     const chartInstance = useRef(null);
     useEffect(()=>{
