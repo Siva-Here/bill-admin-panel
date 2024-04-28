@@ -1,4 +1,3 @@
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -19,7 +18,7 @@ code {
   height: 70vh;
   /* background-color: #c3cbdc;
   background-image: linear-gradient(147deg, #c3cbdc 0%, #edf1f4 74%); */
-  margin-top: 0px;
+  margin-top: 20px;
   margin-bottom: 100px;
   margin-right: 10px;
   background: rgba(255, 255, 255, 0);

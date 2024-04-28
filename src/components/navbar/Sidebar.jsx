@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 
 import "./Sidebar.css";
 function Sidebar() {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   function handleLogOut() {
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("username");
@@ -36,13 +36,13 @@ function Sidebar() {
             isExpanded ? "d-inline" : "d-none s-sm-inline"
           }`}
         >
-          <li className="sidebar-item mt-3">
-            <NavLink to="/admin" className="sidebar-link">
+          <li className="sidebar-item mt-3" >
+            <NavLink to="/admin" className="sidebar-link" onClick={()=>{setIsExpanded(false)}}>
               <GoHomeFill className="fs-4 text-white" />
               <span className="ms-3">Home</span>
             </NavLink>
           </li>
-          <li className="sidebar-item mt-3">
+          <li className="sidebar-item mt-3" >
             <a
               href="#"
               className="sidebar-link collapsed has-dropdown"
@@ -59,19 +59,19 @@ function Sidebar() {
               className="sidebar-dropdown list-unstyled collapse"
               data-bs-parent="#sidebar"
             >
-              <li className="sidebar-item mt-3">
-                <NavLink to="/upload" className="sidebar-link">
+              <li className="sidebar-item mt-3" >
+                <NavLink to="/upload" className="sidebar-link" onClick={()=>{setIsExpanded(false)}}>
                   Upload Bill
                 </NavLink>
               </li>
-              <li className="sidebar-item mt-3">
-                <NavLink to="/admin/bills" className="sidebar-link">
+              <li className="sidebar-item mt-3" >
+                <NavLink to="/admin/bills" className="sidebar-link" onClick={()=>{setIsExpanded(false)}}>
                   <span className="fs-6">All Bills</span>
                 </NavLink>
               </li>
             </ul>
           </li>
-          <li className="sidebar-item mt-3">
+          <li className="sidebar-item mt-3" >
             <a
               href="#"
               className="sidebar-link collapsed has-dropdown"
@@ -88,46 +88,46 @@ function Sidebar() {
               className="sidebar-dropdown list-unstyled collapse"
               data-bs-parent="#sidebar"
             >
-              <li className="sidebar-item mt-3">
-                <NavLink to="/admin/addUser" className="sidebar-link">
+              <li className="sidebar-item mt-3" >
+                <NavLink to="/admin/addUser" className="sidebar-link" onClick={()=>{setIsExpanded(false)}}>
                   Register User
                 </NavLink>
               </li>
-              <li className="sidebar-item mt-3">
-                <NavLink to="/admin/addAdmin" className="sidebar-link">
+              <li className="sidebar-item mt-3" >
+                <NavLink to="/admin/addAdmin" className="sidebar-link" onClick={()=>{setIsExpanded(false)}}>
                   Register Admin
                 </NavLink>
               </li>
             </ul>
           </li>
-          {/* <li className="sidebar-item mt-3">
+          {/* <li className="sidebar-item mt-3" >
             <a href="#" className="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
               data-bs-target="#dash" aria-expanded="false" aria-controls="dash">
               <MdDashboard className='fs-3 text-white icons'/>
               <span className='ms-3'>DashBoard</span>
             </a>
             <ul id="dash" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-              <li className="sidebar-item mt-3">
-                <NavLink to="/admin/users" className="sidebar-link">User Stats</NavLink>
+              <li className="sidebar-item mt-3" >
+                <NavLink to="/admin/users" className="sidebar-link">User Stats</NavLink onClick={()=>{setIsExpanded(false)}}>
               </li>
-              <li className="sidebar-item mt-3">
+              <li className="sidebar-item mt-3" >
                 <a href="#" className="sidebar-link">Category Stats</a>
               </li>
             </ul>
           </li> */}
-          <li className="sidebar-item mt-3">
-            <NavLink to="/contact" className="sidebar-link">
+          <li className="sidebar-item mt-3" >
+            <NavLink to="/contact" className="sidebar-link" onClick={()=>{setIsExpanded(false)}}>
               <i className="lni lni-popup"></i>
               <span className="ms-3">Contact Us</span>
             </NavLink>
           </li>
-          <li className="sidebar-item mt-3">
+          <li className="sidebar-item mt-3" >
             <a href="#" className="sidebar-link">
               <i className="lni lni-popup"></i>
               <span className="ms-3">Notification</span>
             </a>
           </li>
-          <li className="sidebar-item mt-3">
+          <li className="sidebar-item mt-3" >
             <a href="#" className="sidebar-link">
               <i className="lni lni-cog"></i>
               <span className="ms-3">Setting</span>
@@ -140,7 +140,7 @@ function Sidebar() {
           }`}
           onClick={handleLogOut}
         >
-          <NavLink
+          <NavLink onClick={()=>{setIsExpanded(false)}}
             to="/login"
             className="text-white ms-4 mb-3 fs-6 text-decoration-none"
           >

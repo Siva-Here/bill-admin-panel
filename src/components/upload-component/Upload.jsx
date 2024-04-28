@@ -143,8 +143,8 @@ function Upload() {
         <Sidebar />
         <div className="container">
           <div>
-              <div className='container-lg'>
-                <div className="upload-outer-div container-sm accordion w-auto">
+              <div className='container-lg mt-5'>
+                <div className=" upload-outer-div container-sm accordion w-auto" style={{marginTop: "100px"}}>
                   <h1 id="upload-heading" className="mt-2 mb-5 fw-bold">
                     Upload Bill
                   </h1>
