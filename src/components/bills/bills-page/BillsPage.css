@@ -1,0 +1,118 @@
+
+table{
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: 3px 3px 20px rgba(255,255,255,0.6);
+    background-color: rgba(240, 248, 255, 0);
+    font-weight: bold;
+    overflow: hidden;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
+}
+.upload-outer-div{
+  margin: 50px 0px;
+  border-radius: 5px;
+  color: white;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid gray;
+  padding: 3%;
+  line-height: 20px;
+  box-shadow: 2px 20px 40px rgba(29, 53, 129, 0.5);
+}
+tr{
+  box-shadow: 3px 3px 2px rgba(255,255,255,0.6);
+}
+td{
+    padding: 10px 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    text-wrap: wrap;
+    white-space: normal;
+    margin: 0px;
+    font-size: 20px;
+}
+.heading{
+    font-weight: bold;
+    font-size: 18px;
+    color: blue;
+    
+    
+}
+
+.table-bord{
+    border-radius: 5px;
+}
+
+@media (max-width: 950px){
+    td::before{
+        content: attr(data-cell) ": ";
+        font-weight: 700;
+        color: #0000ff;
+    }
+}
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    max-width: 80%;
+    max-height: 80%;
+    overflow: auto;
+  }
+  
+  .popup-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .popup-content button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .popup-content button:hover {
+    background-color: #0056b3;
+  }
+
+  .custom-select {
+    border: 2px solid blue; 
+    background-color: black; 
+    color: white; 
+    border-radius: 4px;
+    padding: 4px;
+  }
+  
+  .pending {
+    color: yellow; 
+  }
+  
+  .accepted {
+    color: green; 
+  }
+  
+  .rejected {
+    color: red; 
+  }
+  
