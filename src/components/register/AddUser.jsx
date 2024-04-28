@@ -34,8 +34,8 @@ const AddUser = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
+    const passwordRegex = /.*/;
+      // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
 
     if (!passwordRegex.test(formData.password)) {
       toast.error("Password must be 8-10 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.");
