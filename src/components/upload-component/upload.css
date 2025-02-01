@@ -55,3 +55,80 @@ label, input{
     border: 1px solid black;
     color: black;
 }
+
+
+.upload-container {
+  background-color: #1e2124;
+  border-radius: 0.5rem;
+  /* max-width: 768px; */
+  /* margin: 0 auto; */
+}
+
+.upload-area {
+  border: 2px dashed rgba(137, 87, 229, 0.3);
+  border-radius: 0.5rem;
+  padding: 3rem 1rem;
+  /* min-height: 300px; */
+  background-color: #1e2124;
+  max-height:150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.upload-area.dragging {
+  border-color: #8957e5;
+  background-color: rgba(137, 87, 229, 0.1);
+}
+
+.upload-icon {
+  color: white;
+  font-size: 3rem;
+}
+
+
+
+.help-btn {
+  text-decoration: none;
+}
+
+.help-btn:hover {
+  color: white !important;
+}
+
+.btn-primary {
+  background-color: #8957e5 !important;
+  border-color: #8957e5 !important;
+}
+
+.btn-primary:hover {
+  background-color: #7548c7 !important;
+  border-color: #7548c7 !important;
+}
+
+.btn-secondary {
+  background-color: #2d3035 !important;
+  border-color: #2d3035 !important;
+}
+
+.btn-secondary:hover {
+  background-color: #3d4045 !important;
+  border-color: #3d4045 !important;
+}
+
+
+.custom-small {
+  font-size: 0.85rem; /* Smaller font size */
+}
+
+.custom-medium {
+  font-size: 1rem; /* Medium font size */
+}
+
+.custom-large {
+  font-size: 1.25rem; /* Larger font size */
+}

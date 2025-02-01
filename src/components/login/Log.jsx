@@ -88,21 +88,21 @@ const Log = () => {
   return (
     <>
       <ToastContainer />
-      <h1 className="display-4 text-white text-center fw-bold fst-italic">Bill Management System</h1>
+      <h1 className="display-4 mb-5 text-white text-center fw-bold fst-italic">Bill Management System</h1>
       {isLogin && <>{navigate('/admin')}</>}
 
       {!isLogin && (
-        <div className=" justify-content-center d-flex flex-column p-5 rounded-2 siva">
+        <div className=" justify-content-center d-flex flex-column px-3 px-md-5 rounded-2 siva py-3">
           <h1 className="text-center signup">
             <RiAccountCircleFill className="icon" /> Sign In
           </h1>
           <br />
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <MdEmail className="me-2 username" />
+            <div className="mb-2">
+              <MdEmail className="username"/>
               <label
                 htmlFor="exampleInputEmail1"
-                className="p-3 pt-3 pb-3 form-label username"
+                className="form-label username"
               >
                 User Name
               </label>
@@ -116,15 +116,15 @@ const Log = () => {
                 onChange={handleChange}
                 required
               />
-              <div id="emailHelp" className="pt-2 form-text text-white">
+              <div id="emailHelp" className="pt-2  form-text text-white">
                 We'll never share your username with anyone else.
               </div>
             </div>
-            <div className="mb-3">
-              <RiLockPasswordFill className="me-2 text-white" />
+            <div className="mb-2 mt-3">
+              <RiLockPasswordFill className="text-white" />
               <label
                 htmlFor="exampleInputPassword1"
-                className="p-3 pb-3 pt-3 text-white form-label"
+                className="text-white form-label"
               >
                 Password
               </label>
@@ -152,7 +152,7 @@ const Log = () => {
               </div>
             </div>
             <div className="justify-content-between d-flex">
-              <button type="submit" className="btn btn-outline-primary ms-auto me-auto mt-5" disabled={isLoading}>
+              <button type="submit" className="btn btn-outline-primary ms-auto me-auto mt-3 mb-2" disabled={isLoading}>
                 {isLoading ? <div className="spinner-border text-light" role="status"><span className="visually-hidden">Loading...</span></div> : "Submit"}
               </button>
             </div>

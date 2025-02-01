@@ -1,12 +1,12 @@
 
-table{
+/* table{
     border: 1px solid rgb(255, 255, 255);
     box-shadow: 3px 3px 20px rgba(255,255,255,0.6);
     background-color: rgba(240, 248, 255, 0);
     font-weight: bold;
     overflow: hidden;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', Verdana, sans-serif;
-}
+} */
 .upload-outer-div{
   margin: 50px 0px;
   border-radius: 5px;
@@ -21,7 +21,7 @@ table{
   line-height: 20px;
   box-shadow: 2px 20px 40px rgba(29, 53, 129, 0.5);
 }
-tr{
+/* tr{
   box-shadow: 3px 3px 2px rgba(255,255,255,0.6);
 }
 td{
@@ -33,7 +33,7 @@ td{
     white-space: normal;
     margin: 0px;
     font-size: 20px;
-}
+} */
 .heading{
     font-weight: bold;
     font-size: 18px;
@@ -42,17 +42,17 @@ td{
     
 }
 
-.table-bord{
+/* .table-bord{
     border-radius: 5px;
-}
+} */
 
-@media (max-width: 950px){
+/* @media (max-width: 950px){
     td::before{
         content: attr(data-cell) ": ";
         font-weight: 700;
         color: #0000ff;
     }
-}
+} */
 .popup {
     position: fixed;
     top: 0;
@@ -114,5 +114,10 @@ td{
   
   .rejected {
     color: red; 
+  }
+  
+  input::placeholder {
+    color: white;
+    opacity: 1; /* Ensures full opacity */
   }
   

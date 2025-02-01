@@ -7,6 +7,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { MdDashboard } from "react-icons/md";
 import BillsPage from "../bills/bills-page/BillsPage";
 import { NavLink } from "react-router-dom";
+import { IoMdMenu } from "react-icons/io";
 
 import "./Sidebar.css";
 function Sidebar() {
@@ -24,8 +25,9 @@ function Sidebar() {
       <aside id="sidebar" className={isExpanded ? "expand" : ""}>
         <div className="d-flex">
           <button className="toggle-btn" type="button" onClick={toggleSidebar}>
-            <BiSolidCategory className="fs-1 text-white home-icon icons" />
-            <h5 className="mt-2 text-white">Menu</h5>
+            {/* <BiSolidCategory className="fs-1 text-white home-icon icons" /> */}
+            <IoMdMenu className="sideIcon" style={{backgroundColor:"white",borderRadius:"50%",padding:'5px',marginLeft:'-15px'}}/>
+            {/* <h5 className="mt-2 text-white">Menu</h5> */}
           </button>
           <div className="sidebar-logo text-white fs-2">
             {localStorage.getItem("username")}
@@ -40,6 +42,7 @@ function Sidebar() {
             <NavLink to="/admin" className="sidebar-link" onClick={()=>{setIsExpanded(false)}}>
               <GoHomeFill className="fs-4 text-white" />
               <span className="ms-3">Home</span>
+              
             </NavLink>
           </li>
           <li className="sidebar-item mt-3" >

@@ -52,8 +52,8 @@ body {
 }
 
 #sidebar.expand {
-  width: 260px;
-  min-width: 260px;
+  /* width: 260px;
+  min-width: 260px; */
   background: rgba(255, 255, 255, 0.05);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(15px);
@@ -156,4 +156,42 @@ a.sidebar-link:hover {
 #sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
   transform: rotate(45deg);
   transition: all 0.2s ease-out;
+}
+
+
+
+
+/* Small screens (max-width: 576px) */
+@media (max-width: 576px) {
+  .sideIcon {
+    font-size: 24px;
+  }
+
+  #sidebar.expand{
+    width: 260px;
+  }
+}
+
+/* Medium screens (577px - 768px) */
+@media (min-width: 577px) and (max-width: 768px) {
+  .sideIcon {
+    font-size: 40px;
+    
+  }
+
+  #sidebar.expand{
+    width: 420px;
+  }
+}
+
+/* Large screens (769px and up) */
+@media (min-width: 769px) {
+  .sideIcon {
+    font-size: 42px;
+
+  }
+
+  #sidebar.expand{
+    width: 380px;
+  }
 }

@@ -6,6 +6,11 @@ input[type="search"]::placeholder{
   color: white;
   font-weight: lighter;
 }
+
+input[type="number"]::placeholder{
+  color: white;
+  font-weight: lighter;
+}
 .big {
   font-size: 1.2em;
 }

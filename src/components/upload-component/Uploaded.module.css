@@ -1,0 +1,205 @@
+
+.label, .input {
+    margin-left: 40px;
+  }
+  
+  .webcamContainer {
+    position: relative;
+    width: 100%;
+    padding-top: 75%; 
+  }
+  
+  .webcam {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+  
+  .captureButton {
+    position: absolute; /* Adjust as needed */
+    left: 75%;
+    transform: translateX(-50%);
+  }
+  
+  .uploadOuterDiv {
+    margin: 40px 0px;
+    padding-top:10px;
+    border-radius: 5px;
+    color: white;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid gray;
+    box-shadow: 2px 20px 40px rgba(29, 53, 129, 0.5);
+  }
+  
+  /* .buttn {
+    padding: 7px 10px;
+    border: 1px solid white;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    margin: 20px;
+    margin-left: 36%;
+    margin-top: 5%;
+    text-align: center;
+  } */
+
+  .buttn {
+    padding: 1px 6px;
+    border: 1px solid white;
+    background-color: red;
+    color: white;
+    /* font-weight: 600; */
+    border-radius: 5px;
+    margin: 20px auto; /* Center horizontally */
+    margin-top: 13%;
+    text-align: center;
+    display: block; /* Ensures it respects `margin: auto` */
+  }
+  
+  
+  .buttn:hover {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+  }
+
+  .imgCustom {
+    width: 100%; /* Prevents images from overflowing */
+    /* min-height: 100px;  */
+    /* max-height: 300px; */
+    max-height:300px;
+    border-radius: 8px; /* Optional: Adds rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Optional: Adds a subtle shadow */
+    object-fit:fill 
+  }
+  
+  
+  
+  .tableContainer {
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tableHeaderCell,
+  .tableDataCell {
+    text-align: center;
+    padding: 10px;
+    color: white;
+    /* background-color: white; */
+    border: 1px solid #ddd;
+  }
+  
+  .image {
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: auto;
+    /* object-fit:cover; */
+  }
+  
+  .buttonOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black background */
+    color: white; /* White text */
+    border: none;
+    font-size: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index:1
+  }
+  
+
+  .modalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background-color: white;
+    padding: 3px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+    max-width: 99%; /* Limits modal width to 90% of the viewport */
+    margin: 0 20px; 
+  }
+  
+  .modalContent img {
+    max-width: 100%;
+    max-height:700px;
+    border-radius: 8px;
+  }
+  
+  .modalCloseBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 21px;
+    font-weight: 600;
+    width:30px;
+    height:30px; 
+    text-align: center;
+    background: red;
+    border-radius:50px;
+    border: none;
+    cursor: pointer;
+    color:white;
+  }
+  
+
+  @media (max-width: 768px) {
+    .buttonOverlay {
+        font-size: 3vw; /* Slightly larger for tablets/small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .buttonOverlay {
+        font-size: 12px; /* Fixed size for very small screens */
+    }
+}
+
+/* Default for smaller screens */
+.cardTitle {
+  font-size: 14px;
+  transition: font-size 0.2s ease-in-out;
+}
+
+.cardValue {
+  font-size: 13px;
+  transition: font-size 0.2s ease-in-out;
+}
+
+/* For medium screens and above */
+@media (min-width: 768px) {
+  .cardTitle{
+    font-size: 18px;
+  }
+  .cardValue {
+    font-size: 16px;
+  }
+}
