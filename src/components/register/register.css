@@ -5,6 +5,15 @@ code {
 .username {
   color: aliceblue;
 }
+
+.center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* max-height: 100vh; */
+}
+
+
 .signup {
   color: rgb(253, 252, 255);
   font-weight: 600;
@@ -12,14 +21,15 @@ code {
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
 
-.siva {
+.sivah {
   /* position: relative;
   top: 40px;
   height: 70vh;
 
   margin-top: 20px;
-  margin-bottom: 100px;
+  
   margin-right: 10px; */
+  /* margin-bottom: 150px; */
   background: rgba(255, 255, 255, 0);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(11px);
@@ -36,3 +46,6 @@ code {
 .email {
   color: whitesmoke;
 }
+
+
+

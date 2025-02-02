@@ -40,3 +40,37 @@
 .rejected:before {
     background-color: #FF0000; /* Red */
 }
+
+.download-btn {
+    background-color:#130f40; 
+    /* background-image: linear-gradient(90deg, #130f40 0%, #000000 74%); */
+    color: white;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .download-btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
+
+
+
+  .custom-dropdown {
+    max-height: 10px; /* Default dropdown height */
+    overflow: hidden;
+  }
+  
+  .custom-dropdown option {
+    max-height: 150px; /* Limits the dropdown height */
+  }
+  
+  .custom-dropdown-scroll {
+    overflow-y: auto;
+    max-height: 200px; /* Enables scrolling */
+  }
+  
+  
+  

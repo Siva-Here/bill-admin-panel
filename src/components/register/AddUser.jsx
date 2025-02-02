@@ -4,6 +4,7 @@ import { RiLockPasswordFill, RiAccountCircleFill } from "react-icons/ri";
 import { GiConfirmed } from "react-icons/gi";
 import axios from "axios";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { FiPhone } from "react-icons/fi";
 import { toast, ToastContainer } from "react-toastify"; // Add ToastContainer here
 import "react-toastify/dist/ReactToastify.css";
 import "./register.css";
@@ -12,16 +13,56 @@ const AddUser = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
+    mobile:"",
+    email:"",
     password: "",
     confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    mobile: "",
+    email: "",
+  });
+
+  const validateMobile = (mobile) => {
+    if (!/^\d+$/.test(mobile)) {
+      setErrors({ ...errors, mobile: "please enter digits only" });
+    } else {
+      setErrors({ ...errors, mobile: "" });
+    }
+  };
+
+ 
+  
+
+  // Email validation
+  // const validateEmail = (email) => {
+  //   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  //   if (!emailRegex.test(email)) {
+  //     setErrors({ ...errors, email: "Invalid email format" });
+  //   } else {
+  //     setErrors({ ...errors, email: "" });
+  //   }
+  // };
+
+  const validateEmail = (email) => {
+    // Regex for email validation as per the given criteria
+    const emailRegex = /^[nN]\d{6}@rguktn\.ac\.in$/;
+    if (!emailRegex.test(email)) {
+      setErrors({ ...errors, email: "please enter valid college mail" });
+    } else {
+      setErrors({ ...errors, email: "" });
+    }
+  };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  console.log(formData)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -30,6 +71,25 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    // validateMobile(formData.mobile);
+
+    if(formData.mobile.length < 10){
+      setErrors((prevErrors) => ({ ...prevErrors, mobile: "Mobile number must be 10 digits" }));
+    setIsLoading(false);
+    return; 
+    }
+    
+    validateMobile(formData.mobile);
+    
+
+    validateEmail(formData.email);
+
+    // Check for errors before submitting the form
+    if (errors.mobile || errors.email) {
+      setIsLoading(false);
+      return;
+    }
 
     const passwordRegex = /.*/;
     // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
@@ -53,7 +113,7 @@ const AddUser = () => {
       console.log(token);
 
       const response = await axios.post(
-        "https://bill-server-hiq9.onrender.com/admin/addUser",
+        "http://localhost:8000/admin/addUser",
         formData,
         {
           headers: {
@@ -67,6 +127,8 @@ const AddUser = () => {
       setIsLoading(false);
       setFormData({
         username: "",
+        mobile:"",
+        email: "",
         password: "",
         confirmPassword: "",
       });
@@ -80,7 +142,8 @@ const AddUser = () => {
   return (
     <>
       <ToastContainer />
-      <div className="p-5 rounded-2 siva h-100">
+      <div className="center-container  " >
+      <div className="p-3  px-md-4 py-md-5 py-lg-3 rounded-2 sivah h-100 mt-3 mb-3 mt-md-0">
         <h1 className="text-center text-white">
           <RiAccountCircleFill /> Register Normal User
         </h1>
@@ -88,10 +151,11 @@ const AddUser = () => {
         <form onSubmit={handleSubmit}>
           {/* Your form inputs */}
           <div className="mb-3">
-            <MdEmail className="me-2 text-white" />
+            <MdEmail className="text-white" />
             <label
               htmlFor="exampleInputEmail1"
-              className="form-label text-white ps-3"
+              className="form-label text-white"
+              style={{marginLeft:'15px'}}
             >
               User Name
             </label>
@@ -104,15 +168,72 @@ const AddUser = () => {
               onChange={handleChange}
               required
             />
-            <div id="emailHelp" className="form-text text-white pt-3 pb-1">
+            <div id="emailHelp" className="form-text text-white pt-2 pb-1">
               We'll never share your username with anyone else.
             </div>
           </div>
-          <div className="mb-3">
-            <RiLockPasswordFill className="me-2 text-white" />
+
+          {/* Email */}
+          <div className="mb-4">
+            <MdEmail className="text-white" />
+            <label htmlFor="email" className="form-label text-white" style={{marginLeft:'15px'}}>
+              Email
+            </label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              name="email"
+              value={formData.email}
+              // onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                validateEmail(e.target.value); // Validate email on change
+              }}
+              required
+            />
+             {errors.email && (
+                <div style={{ color: 'red', fontSize: '0.875rem', marginTop: '5px' }}>
+                  {errors.email}
+                </div>
+              )}
+          </div>
+
+          {/* Mobile Number */}
+          <div className="mb-4">
+            < FiPhone className="text-white" />
+            <label htmlFor="mobile" className="form-label text-white" style={{marginLeft:'15px'}}>
+              Mobile Number
+            </label>
+            <input
+              type="tel"
+              className="form-control"
+              id="mobile"
+              name="mobile"
+              value={formData.mobile}
+              onChange={(e) => {
+                handleChange(e);
+                validateMobile(e.target.value);
+              }
+              }
+              maxLength={10}
+              inputMode="numeric" // Ensures mobile keyboards show numbers
+              pattern="[0-9]*"
+              required
+            />
+             {errors.mobile && (
+                <div style={{ color: 'red', fontSize: '0.875rem', marginTop: '5px' }}>
+                  {errors.mobile}
+                </div>
+              )}
+          </div>
+
+          <div className="mb-4">
+            <RiLockPasswordFill className="text-white" />
             <label
               htmlFor="exampleInputPassword1"
-              className="form-label text-white pt-3 pb-1 ps-3"
+              className="form-label text-white pb-1"
+              style={{marginLeft:'15px'}}
             >
               Password
             </label>
@@ -139,11 +260,12 @@ const AddUser = () => {
               </button>
             </div>
           </div>
-          <div className="mb-3">
-            <GiConfirmed className="me-2 text-white" />
+          <div className="mb-4">
+            <GiConfirmed className="text-white" />
             <label
               htmlFor="exampleInputConfirmPassword1"
-              className="form-label text-white ps-3"
+              className="form-label text-white"
+              style={{marginLeft:'15px'}}
             >
               Confirm Password
             </label>
@@ -160,7 +282,7 @@ const AddUser = () => {
           <div className="justify-content-center d-flex ps-auto pe-auto">
             <button
               type="submit"
-              className="btn btn-outline-primary ms-auto me-auto"
+              className="btn btn-outline-primary ms-auto me-auto mt-2 "
               disabled={isLoading}
             >
               {isLoading ? (
@@ -173,6 +295,7 @@ const AddUser = () => {
             </button>
           </div>
         </form>
+      </div>
       </div>
     </>
   );

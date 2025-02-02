@@ -80,17 +80,18 @@ const AddUser = () => {
   return (
     <>
       <ToastContainer />
-      <div className="p-5 rounded-2 siva h-100">
+      <div className="px-4 py-3 rounded-2 siva h-100">
         <h1 className="text-center text-white">
           <RiAccountCircleFill /> Register New Admin
         </h1>
         <br />
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <MdEmail className="me-2 text-white" />
+            <MdEmail className="text-white" />
             <label
               htmlFor="exampleInputEmail1"
-              className="form-label text-white ps-3"
+              className="form-label text-white"
+              style={{marginLeft:'12px'}}
             >
               Admin Name
             </label>
@@ -103,15 +104,16 @@ const AddUser = () => {
               onChange={handleChange}
               required
             />
-            <div id="emailHelp" className="form-text text-white pt-3 pb-1">
+            <div id="emailHelp" className="form-text text-white pt-1 pb-1">
               We'll never share your username with anyone else.
             </div>
           </div>
-          <div className="mb-3">
-            <RiLockPasswordFill className="me-2 text-white" />
+          <div className="mb-4">
+            <RiLockPasswordFill className="text-white" />
             <label
               htmlFor="exampleInputPassword1"
-              className="form-label text-white pt-3 pb-1 ps-3"
+              className="form-label text-white pt-1 pb-1"
+              style={{marginLeft:'12px'}}
             >
               Password
             </label>
@@ -139,10 +141,11 @@ const AddUser = () => {
             </div>
           </div>
           <div className="mb-3">
-            <GiConfirmed className="me-2 text-white" />
+            <GiConfirmed className="text-white" />
             <label
               htmlFor="exampleInputConfirmPassword1"
-              className="form-label text-white ps-3"
+              className="form-label text-white "
+              style={{marginLeft:'12px'}}
             >
               Confirm Password
             </label>
@@ -156,7 +159,7 @@ const AddUser = () => {
               required
             />
           </div>
-          <div className="justify-content-center d-flex ps-auto pe-auto">
+          <div className="justify-content-center d-flex ps-auto pe-auto mb-2 pt-3">
             <button
               type="submit"
               className="btn btn-outline-primary ms-auto me-auto"

@@ -8,8 +8,8 @@ const MainReg = () => {
     <div>
       <Sidebar />
       <div className="container-lg">
-        <div className="row justify-content-center align-content-center align-items-center ">
-          <div className="col-lg-6 col-md-6 col-sm-12 mt-5 mt-sm-2 pt-5 mt-md-2">
+        <div className="row d-flex align-items-center justify-content-center vh-100">
+          <div className="col-lg-6 col-md-10 col-sm-12 mt-5 pt-2 md-mt-0 md-pt-0">
             <Reg />
           </div>
         </div>

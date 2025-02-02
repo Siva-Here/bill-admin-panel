@@ -39,7 +39,15 @@ const BarPlot = (props) => {
                 ],
                 borderWidth: 1
               }]
-            }      
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false, // Allows dynamic resizing
+              scales: {
+                x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 0 } },
+                y: { beginAtZero: true }
+            }
+          }      
         })
         return ()=> {
             if(chartInstance.current){
@@ -49,9 +57,13 @@ const BarPlot = (props) => {
     },[])
 
   return (
-    <div style={{width: "85%", overflow:"hidden"}}>
-        <canvas ref={chartRef} />
-    </div>
+    // <div style={{width: "85%", overflow:"hidden"}}>
+    //     <canvas ref={chartRef} />
+    // </div>
+
+    <div style={{ width: "100%", maxWidth: "85%", overflow: "hidden", margin: "auto",height:"250px"}}>
+    <canvas ref={chartRef} style={{ maxWidth: "100%", height: "auto" }} />
+</div>
   )
 }
 
