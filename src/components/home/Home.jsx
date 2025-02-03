@@ -26,10 +26,21 @@ const Home = () => {
   const [pendingBill, setPendingBill] = useState(0);
   const [acceptedBill, setAcceptedBill] = useState(0);
   const [rejectedBill, setRejectedBill] = useState(0);
+  const [totalBills,setTotalBills] = useState(0);
+
+  const [gstPendingBill, setGstPendingBill] = useState(0);
+  const [gstAcceptedBill, setGstAcceptedBill] = useState(0);
+  const [gstRejectedBill, setGstRejectedBill] = useState(0);
+  const [totalGstBills,setTotalGstBills] = useState(0);
+
+  const [NonGstPendingBill, setNonGstPendingBill] = useState(0);
+  const [NonGstAcceptedBill, setNonGstAcceptedBill] = useState(0);
+  const [NonGstRejectedBill, setNonGstRejectedBill] = useState(0);
+  const [totalNonGstBills,setTotalNonGstBills] = useState(0);
 
   const [dataByType, setDataByType] = useState({});
   const [dataByTypeAmount, setDataByTypeAmount] = useState({});
-  const categories = ["infra", "hospitality", "food"];
+  const categories = ["printing", "marketing", "travelling", "outside promotions", "stage photography"];
 
   const bills = [
     {
@@ -244,6 +255,7 @@ const Home = () => {
     }
   };
 
+  console.log("dataByType",dataByType)
 
   
 
@@ -306,7 +318,10 @@ const Home = () => {
     };
   
 
+    // console.log("data is:",data);
+
   const handleUserChange = (e) => {
+    console.log("User changed:",e.target.value)
     let pendingCount = 0;
     let acceptedCount = 0;
     let rejectedCount = 0;
@@ -320,11 +335,16 @@ const Home = () => {
 
     categories.forEach((label) => {
       dataByType[label] = 0;
-      dataByTypeAmount[label] = 0;
+      dataByTypeAmount[label] =0 ;
     });
 
-    data.forEach((data1) => {
+    data?.forEach((data1) => {
+      
       if (data1.uploadedBy == e.target.value || e.target.value == "") {
+        console.log("data is:",data1.type)
+
+        dataByType[data1.category] += 1;
+        dataByTypeAmount[data1.category] += data1.amount;
         if (data1.status === "pending") {
           pendingCount++;
           pendingAmount += data1.amount;
@@ -335,8 +355,7 @@ const Home = () => {
           rejectedCount++;
           rejectedAmount += data1.amount;
         }
-        dataByType[data1.type] += 1;
-        dataByTypeAmount[data1.type] += data1.amount;
+        
       }
     });
 
@@ -361,7 +380,12 @@ const Home = () => {
     }, 10);
   };
 
+  
+
+  console.log("gststs",gstAcceptedBill)
+
   useEffect(() => {
+    // handleUserChange1()
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("jwtToken");
@@ -386,6 +410,14 @@ const Home = () => {
         let acceptedAmount = 0;
         let rejectedAmount = 0;
 
+        let gpendingCount = 0;
+    let gacceptedCount = 0;
+    let grejectedCount = 0;
+
+    let ngpendingCount = 0;
+    let ngacceptedCount = 0;
+    let ngrejectedCount = 0;
+
         let dataByType = {};
         let dataByTypeAmount = {};
 
@@ -395,6 +427,8 @@ const Home = () => {
         });
 
         response.data.bills.forEach((data1) => {
+          dataByType[data1.category] += 1;
+          dataByTypeAmount[data1.category] += data1.amount;
           if (data1.status === "pending") {
             pendingCount++;
             pendingAmount += data1.amount;
@@ -405,9 +439,36 @@ const Home = () => {
             rejectedCount++;
             rejectedAmount += data1.amount;
           }
-          dataByType[data1.type] += 1;
-          dataByTypeAmount[data1.type] += data1.amount;
+          
+          if (data1.billType === "GST" && data1.status === "pending") {
+            gpendingCount++;
+          } else if (data1.billType === "GST" && data1.status === "accepted") {
+            gacceptedCount++;
+          } else if (data1.billType === "GST" && data1.status === "rejected") {
+            grejectedCount++;
+          }
+          
+          if (data1.billType === "Non GST" && data1.status === "pending") {
+            ngpendingCount++;
+          } 
+          else if (data1.billType === "Non GST" && data1.status === "accepted") {
+            ngacceptedCount++;
+          } else if (data1.billType === "Non GST" && data1.status === "rejected") {
+            ngrejectedCount++;
+          }
+          
         });
+
+        console.log("pen",gacceptedCount)
+        setGstPendingBill(gpendingCount);
+        setGstAcceptedBill(gacceptedCount);
+        setGstRejectedBill(grejectedCount);
+        setTotalGstBills(gpendingCount+gacceptedCount+grejectedCount)
+
+        setNonGstPendingBill(ngpendingCount);
+        setNonGstAcceptedBill(ngacceptedCount);
+        setNonGstRejectedBill(ngrejectedCount);
+        setTotalNonGstBills(ngpendingCount+ngacceptedCount+ngrejectedCount)
 
         setPending(pendingCount);
         setAccepted(acceptedCount);
@@ -509,7 +570,8 @@ const Home = () => {
             );
           })}
         </select> */}
-        <div className="d-flex justify-content-evenly col-gap-5 row-gap-5 align-items-center row mt-5">
+
+        <div className="d-flex justify-content-evenly col-gap-5 row-gap-5 align-items-center row mt-5 ms-2 ms-md-0">
           <div className="card-outer-div text-white mb-3 col-10 col-lg-5">
             <div className="row g-0">
               <div className="col-md-5">
@@ -546,8 +608,8 @@ const Home = () => {
                 {pendingBill + acceptedBill + rejectedBill != 0 && (
                   <BarPlot
                     label={"Amount spend by status"}
-                    labels={["pending", "accepted", "rejected"]}
-                    data={[pendingBill, acceptedBill, rejectedBill]}
+                    labels={["totalBills","pending", "accepted", "rejected"]}
+                    data={[(pendingBill+acceptedBill+rejectedBill),pendingBill, acceptedBill, rejectedBill]}
                     className="ms-auto"
                   />
                 )}
@@ -565,6 +627,7 @@ const Home = () => {
               fig. Amount spent by status
             </h6>
           </div>
+
           <div className="card-outer-div text-white mb-3 col-10 col-lg-5">
             <div className="row g-0">
               <div className="col-md-5">
@@ -573,6 +636,7 @@ const Home = () => {
                     Total Bills by category: {accepted + rejected + pending}
                   </h5>
                   <p className="ms-3 mt-5">
+                  
                     {categories.map((label, index) => {
                       return (
                         <li key={index} className="m-2">
@@ -613,6 +677,56 @@ const Home = () => {
               fig. Amount spent by category
             </h6>
           </div>
+
+          <div className="card-outer-div text-white mb-3 col-10 col-lg-5">
+            <div className="row g-0">
+              <div className="col-md-5">
+                <div className="card-body">
+                  <h5 className="card-title">
+                    Total Bills With Gst: {totalGstBills}
+                  </h5>
+                  <p className="card-text ms-2">
+                    <li className="pending">Pending: {gstPendingBill}</li>
+                    <li className="accepted">Accepted: {gstAcceptedBill}</li>
+                    <li className="rejected">Rejected: {gstRejectedBill}</li>
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-7 ">
+                {gstAcceptedBill+gstPendingBill+gstRejectedBill != 0 && renderPieChart1()}
+                {gstAcceptedBill+gstPendingBill+gstRejectedBill == 0 && renderPieChart1()}
+              </div>
+            </div>
+            <h6 className="text-center text-info mt-4 mt-md-0">
+              fig. Total number of Gst bills
+            </h6>
+          </div>
+
+          
+          <div className="card-outer-div text-white mb-3 col-10 col-lg-5">
+            <div className="row g-0">
+              <div className="col-md-5">
+                <div className="card-body">
+                  <h5 className="card-title fs-6 fs-md-4">
+                    Total Bills With NonGst: {totalNonGstBills}
+                  </h5>
+                  <p className="card-text ms-2">
+                    <li className="pending">Pending: {NonGstPendingBill}</li>
+                    <li className="accepted">Accepted: {NonGstAcceptedBill}</li>
+                    <li className="rejected">Rejected: {NonGstPendingBill}</li>
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-7 ">
+                {NonGstPendingBill+NonGstAcceptedBill+NonGstPendingBill != 0 && renderPieChart1()}
+                {NonGstPendingBill+NonGstAcceptedBill+NonGstPendingBill == 0 && renderPieChart1()}
+              </div>
+            </div>
+            <h6 className="text-center text-info mt-4 mt-md-0">
+              fig. Total number of NonGst bills
+            </h6>
+          </div>
+
         </div>
       </div>
     </BillContext.Provider>
