@@ -132,3 +132,10 @@ label, input{
 .custom-large {
   font-size: 1.25rem; /* Larger font size */
 }
+
+
+@media (min-width: 992px) {
+  .conta {
+      max-width:600px; 
+  }
+}

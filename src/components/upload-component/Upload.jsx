@@ -466,6 +466,7 @@ function Upload() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const [billType, setBillType] = useState("");
+  const [errors, setErrors] = useState({});
   const [isUploading, setIsUploading] = useState(false); // New state to track upload status
 
   const now = new Date();
@@ -483,6 +484,26 @@ function Upload() {
   const [openPreview, setOpenPreview] = useState(false);
   const [openModel, setOpenModel] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const validateForm = () => {
+    console.log("yash")
+    let errors = {};
+
+    if (!name) errors.name = "Please enter Name";
+    if (!billType) errors.billType = "Please select Bill Type";
+    if (billType === "GST" && !GstNumber) errors.GstNumber = "Please enter GST Number";
+    if (!billNumber) errors.billNumber = "Please enter Bill Number";
+    if (!billCategory) errors.billCategory = "Please select Bill Category";
+    if (!firmName) errors.firmName = "Please enter Firm Name";
+    if (!date) errors.date = "Please select Date of Purchase";
+    if (!billAmount) errors.billAmount = "Please enter Bill Amount";
+
+    console.log(errors)
+    setErrors({...errors});
+    return Object.keys(errors).length === 0;
+  };
+
+  console.log("error is:",errors);
 
   const openModal = (image) => {
     setSelectedImage(image);
@@ -542,15 +563,28 @@ function Upload() {
   };
 
   useEffect(() => {
+    // validateForm()
     billFile && uploadFile(billFile);
   }, [billFile]);
 
     useEffect(()=>{
+
     if(!isLoggedIn){
       navigate('/');
       return;
     }
   },[])
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 576);
+
+  useEffect(() => {
+      const handleResize = () => {
+          setIsMobile(window.innerWidth < 576);
+      };
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const billTypes = ["GST", "Non GST"];
   const category = ["printing", "marketing", "travelling", "outside promotions", "stage photography"];
@@ -567,7 +601,13 @@ function Upload() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()){
+      // setErrors({ ...errors });
+      console.log("yyyey")
+      return;
+    }
 
+    
     const amountRegex = /^\d+(\.\d{1,2})?$/;
     if (!amountRegex.test(billAmount)) {
       setErrorMessage("Please enter a valid amount (numbers only)");
@@ -627,6 +667,7 @@ function Upload() {
       setFirmName("");
       setDate("");
       setErrorMessage("");
+      setErrors({});
       toast.success("Bill submitted successfully!");
       setTimeout(() => {
         window.location.reload();
@@ -649,9 +690,9 @@ function Upload() {
        localStorage.getItem('jwtToken') && (<>
         <Sidebar />
 
-    <div className="container px-md-5 mt-5 pt-5">
-<div className="row " style={{ marginBottom:'40px'}}>
-  <div className="col-6 d-flex flex-column justify-content-center align-items-center" style={{position:'relative'}}>
+    <div className="container px-md-5 mt-5 pt-3">
+<div className="row d-flex justify-content-center align-items-center" style={{ marginBottom:'40px'}}>
+  <div className="col-6 col-lg-3 d-flex flex-column justify-content-center align-items-center" style={{position:'relative'}}>
   <h4 className="text-nowrap" style={{color:'white'}}>With Gst</h4>
     <img src="GSTImagedup.jpg" className={`img-fluid ${styles.imgCustom}`} alt="charan" onClick={() => handlePreview('GSTImagedup4.jpg')}/>
     <button className={`${styles.buttonOverlay} text-nowrap`} style={{width:'auto'}} onClick={() => handlePreview('GSTImagedup4.jpg')}>Click For Preview</button>
@@ -659,7 +700,7 @@ function Upload() {
 
   {/* onClick={() => handlePreview(data1.image)} */}
 
-  <div className="col-6 d-flex flex-column justify-content-center align-items-center" style={{position:'relative'}}>
+  <div className="col-6 col-lg-3 d-flex flex-column justify-content-center align-items-center" style={{position:'relative'}}>
   <h4 className="text-nowrap" style={{color:'white'}}>Without Gst</h4>
     <img src="Notgst.jpg" className={`img-fluid ${styles.imgCustom}`} alt="siva" onClick={() => handlePreview('Notgst1.jpg')} />
      <button className={`${styles.buttonOverlay} text-nowrap`} style={{width:'auto'}} onClick={() => handlePreview('Notgst1.jpg')}>Click For Preview</button>
@@ -669,7 +710,7 @@ function Upload() {
 {openPreview && <PreviewImage image={selectedImage} onClose={closeModal} />}
 
 
-        <div className={`${styles.uploadOuterDiv} container-sm accordion`}>
+        <div className={`conta ${styles.uploadOuterDiv} accordion  ${isMobile ? "container-sm" : ""} ms-auto me-auto`}>
           <h1 id="upload-heading" className="mt-2 mb-4 fw-bold">
             Upload Bill
           </h1>
@@ -680,21 +721,23 @@ function Upload() {
           <form className="fs-4" onSubmit={handleSubmit}>
             <div className="FormComp">
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
-                <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Name:</label>
+                <label className="m-2 me-4 col-11 col-sm-6 col-md-7 col-lg-8">Name:</label>
                 <input
-                  className="ms-2 col-11 col-sm-6 col-md-7"
+                  className="ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
                 />
-              </div>
+                {errors.name && <span className="text-danger">{errors.name}</span>}              </div>
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
-                <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Bill Type:</label>
+                <label className="m-2 me-4 col-11 col-sm-6 col-md-7 col-lg-8">Bill Type:</label>
                 <select
-                  className="ms-2 col-11 col-sm-6 col-md-7"
+                  className="ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
                   value={billType}
                   onChange={(e) => setBillType(e.target.value)}
+                  required
                 >
                   <option value="" className="fs-6">Select Bill Type</option>
                   {billTypes.map((type) => (
@@ -703,38 +746,44 @@ function Upload() {
                     </option>
                   ))}
                 </select>
+                {errors.billType && <span className="text-danger">{errors.billType}</span>}
               </div>
 
               {billType === "GST" && (
                 <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
-                  <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Gst No:</label>
+                  <label className="m-2 me-4 col-11 col-sm-6 col-md-7 col-lg-8">Gst No:</label>
                   <input
-                    className="ms-2 col-11 col-sm-6 col-md-7"
+                    className="ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
                     type="text"
                     value={GstNumber}
                     onChange={(e) => setGstNumber(e.target.value)}
+                    required
                   />
+                  {errors.GstNumber && <span className="text-danger">{errors.GstNumber}</span>}
                 </div>
               )
               }
 
                 <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
-                  <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Bill Number:</label>
+                  <label className="m-2 me-4 col-11 col-sm-6 col-md-7 col-lg-8">Bill Number:</label>
                   <input
-                    className="ms-2 col-11 col-sm-6 col-md-7"
+                    className="ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
                     type="text"
                     value={billNumber}
                     onChange={(e) => setBillNumber(e.target.value)}
+                    required
                   />
+                   {errors.billNumber && <span className="text-danger">{errors.billNumber}</span>}
                 </div>
 
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
-                <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Bill Category:</label>
+                <label className="m-2 me-4 col-11 col-sm-6 col-md-7 col-lg-8">Bill Category:</label>
                 <select
-                  className="ms-2 col-11 col-sm-6 col-md-7"
+                  className="ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
                   value={billCategory}
                   onChange={(e) => setBillCategory(e.target.value)}
+                  required
                 >
                   <option value="" className="fs-5">Select Bill Category</option>
                   {category.map((category) => (
@@ -743,36 +792,43 @@ function Upload() {
                     </option>
                   ))}
                 </select>
+                {errors.billCategory && <span className="text-danger">{errors.billCategory}</span>}
               </div>
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
-                <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Firm Name:</label>
+                <label className="m-2 me-4 col-11 col-sm-6 col-md-7 col-lg-8">Firm Name:</label>
                 <input
-                  className="ms-2 col-11 col-sm-6 col-md-7"
+                  className="ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
                   type="text"
                   value={firmName}
                   onChange={(e) => setFirmName(e.target.value)}
+                  required
                 />
+                {errors.firmName && <span className="text-danger">{errors.firmName}</span>}
               </div>
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
-                <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Date of purchase:</label>
+                <label className="m-2 me-4 col-11 col-sm-6 col-md-7 col-lg-8">Date of purchase:</label>
                 <input
-                  className="ms-2 col-11 col-sm-6 col-md-7"
+                  className="ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                  required
                 />
+                {errors.date && <span className="text-danger">{errors.date}</span>}
               </div>
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
-                <label className="m-2 me-4  col-11 col-sm-6 col-md-7">Bill Amount:</label>
+                <label className="m-2 me-4  col-11 col-sm-6 col-md-7 col-lg-8">Bill Amount:</label>
                 <input
-                  className="ms-2 col-11 col-sm-6 col-md-7"
+                  className="ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
                   type="text"
                   value={billAmount}
                   onChange={(e) => setBillAmount(e.target.value)}
+                  required
                 />
+                {errors.billAmount && <span className="text-danger">{errors.billAmount}</span>}
               </div>
 
              
@@ -780,21 +836,22 @@ function Upload() {
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
 
-                <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Upload Bill:</label>
-                <p className="text-secondary ms-2 mb-3 me-4 col-11 col-sm-6 col-md-7 custom-small custom-md-medium custom-lg-large">Click to upload or drag and drop</p>
+                <label className="m-2 me-4 col-11 col-sm-6 col-md-7 col-lg-8">Upload Bill:</label>
+                <p className="text-secondary ms-2 mb-3 me-4 col-11 col-sm-6 col-md-7 col-lg-8 custom-small custom-md-medium custom-lg-large">Click to upload or drag and drop</p>
                 <div
                   onClick={handleClick}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
-                  className={`upload-area ${isDragging ? 'dragging' : ''} ms-2 col-11 col-sm-6 col-md-7`}
+                  className={`upload-area ${isDragging ? 'dragging' : ''} ms-2 col-11 col-sm-6 col-md-7 col-lg-8`}
                 >
                   <input
                     type="file"
                     ref={fileInputRef}
                     onChange={handleFileSelect}
-                    className="d-none ms-2 col-11 col-sm-6 col-md-7 "
+                    className="d-none ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
                     accept="image/jpeg,image/jpg,image/png"
+                    // required
                   />
 
                   <div className="upload-icon mb-3">
@@ -808,7 +865,7 @@ function Upload() {
 
                 </div>
 
-                <div className="mt-3 d-flex justify-content-between align-items-center  col-11 col-sm-6 col-md-7">
+                <div className="mt-3 d-flex justify-content-between align-items-center  col-11 col-sm-6 col-md-7 col-lg-8">
                   <div className="d-flex gap-4">
                     <p className="text-secondary custom-small custom-md-medium custom-lg-large">
                       Supported formats: JPEG, JPG, PNG, ...
@@ -821,8 +878,6 @@ function Upload() {
 
                 <div className="mt-1 d-flex justify-content-between align-items-center col-11 col-sm-6 col-md-7">
                  
-
-                  
                     <button className="btn btn-secondary" onClick={handleFileCancel}>
                       Reset image
                     </button>

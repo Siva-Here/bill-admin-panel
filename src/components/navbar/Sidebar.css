@@ -168,7 +168,7 @@ a.sidebar-link:hover {
   }
 
   #sidebar.expand{
-    width: 260px;
+    width: 210px;
   }
 }
 
@@ -180,7 +180,7 @@ a.sidebar-link:hover {
   }
 
   #sidebar.expand{
-    width: 420px;
+    width: 320px;
   }
 }
 
@@ -192,6 +192,6 @@ a.sidebar-link:hover {
   }
 
   #sidebar.expand{
-    width: 380px;
+    width: 280px;
   }
 }

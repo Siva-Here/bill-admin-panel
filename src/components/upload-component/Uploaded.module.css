@@ -1,7 +1,7 @@
 
-.label, .input {
+/* .label, .input {
     margin-left: 40px;
-  }
+  } */
   
   .webcamContainer {
     position: relative;
@@ -74,7 +74,7 @@
     width: 100%; /* Prevents images from overflowing */
     /* min-height: 100px;  */
     /* max-height: 300px; */
-    max-height:300px;
+    max-height:200px;
     border-radius: 8px; /* Optional: Adds rounded corners */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Optional: Adds a subtle shadow */
     object-fit:fill 

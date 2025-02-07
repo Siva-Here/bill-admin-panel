@@ -121,3 +121,35 @@ td{
     opacity: 1; /* Ensures full opacity */
   }
   
+
+  .text-responsive {
+    font-size: 24px; /* Default size */
+}
+
+/* Small screens (phones) */
+@media (max-width: 575px) {
+    .text-responsive {
+        font-size: 16px;
+    }
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .text-responsive {
+        font-size: 18px;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .text-responsive {
+        font-size: 20px;
+    }
+}
+
+/* Extra large screens (large desktops) */
+@media (min-width: 992px) {
+    .text-responsive {
+        font-size: 22px;
+    }
+}

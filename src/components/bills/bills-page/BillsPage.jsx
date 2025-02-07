@@ -15,6 +15,13 @@ function UserTable() {
   let [users, setUsers] = useState([]);
   let [sorted, setSorted] = useState(true);
   let [user, setUser] = useState("");
+  let [Loading,setLoading] = useState(false)
+
+  const [text, setText] = useState("");
+  const [status, setStatus] = useState("All Bills");
+  const [gstType,setGstType] = useState("All Bills")
+  const [money, setMoney] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
  
   const [openPreview, setOpenPreview] = useState(false);
   const [reversedData, setReversedData] = useState([]);
@@ -36,6 +43,8 @@ function UserTable() {
       setCurrentPage((prev) => prev - 1);
     }
   };
+
+  
 
   async function handleStatus(e, billId) {
     if (e.target.value == "pending") {
@@ -105,8 +114,51 @@ function UserTable() {
   }, [data]);
 
   useEffect(() => {
+    if (!text && !status && !user && !gstType) {
+      setReversedData([...data].reverse()); // If all filters are empty, show full reversed list
+      return;
+    }
+
+    let filteredData = data;
+
+    // Apply filters dynamically
+    if (text !== "") {
+      console.log("text is changed")
+      filteredData = filteredData.filter(
+        (item) =>
+          item.name.toLowerCase().includes(text.toLowerCase()) ||
+          item.uploadedBy.toLowerCase().includes(text.toLowerCase())
+      );
+      console.log("filterdata from text:",filteredData)
+    }
+
+    if (user !== "") {
+      console.log("user is changed")
+      
+      filteredData = filteredData.filter((item) => item.uploadedBy === user);
+      console.log("filterdata from user:",filteredData)
+    }
+
+    if (status !== "All Bills") {
+      console.log("status is changed")
+      filteredData = filteredData.filter((item) => item.status === status);
+      console.log("filterdata from status:",filteredData)
+    }
+
+    if (gstType !== "All Bills") {
+      console.log("gst is changed")
+      filteredData = filteredData.filter((item) => item.billType === gstType);
+      console.log("filterdata from gstType:",filteredData)
+    }
+
+    setReversedData([...filteredData].reverse()); // Reverse the final filtered list
+}, [text, status, user, gstType]);
+
+
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true)
         const token = localStorage.getItem("jwtToken");
         const response = await axios.get(
           "https://bill-server-hiq9.onrender.com/admin/users",
@@ -127,10 +179,12 @@ function UserTable() {
       } catch (err) {
         console.log(err);
       }
+      setLoading(false)
     };
     fetchUsers();
     const fetchData = async () => {
       try {
+        setLoading(true)
         const token = localStorage.getItem("jwtToken");
         const response = await axios.get(
           "https://bill-server-hiq9.onrender.com/admin/fetchAllBills",
@@ -142,17 +196,19 @@ function UserTable() {
           }
         );
         setData(response.data.bills);
+        
       } catch (err) {
         console.log(err);
       }
+      setLoading(false)
     };
     fetchData();
   }, []);
 
-  const [text, setText] = useState("");
-  const [status, setStatus] = useState("All Bills");
-  const [money, setMoney] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
+  console.log("data is ",data);
+
+
+
   let pending = 0;
   let accepted = 0;
   let rejected = 0;
@@ -164,40 +220,19 @@ function UserTable() {
     setText(e.target.value);
   }
 
-  // const handleMoneySearch = async (e) => {
-  //   const amount = e.target.value;
-  //   setMoney(amount);
 
-  //   if (!amount.trim()) {
-  //     return;
-  //   }
-
-
-  //   try {
-  //     const token = localStorage.getItem("jwtToken");
-  //     const response = await axios.post(
-  //       `http://localhost:8000/admin/search`,{amount:Number(amount)},
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     setData(response.data.selectedBills);
-  //   } catch (err) {
-  //     console.error("Error fetching bills by amount:", err);
-  //   }
-  // };
-
-  console.log(money)
 
   const handleMoneySearch = async (e) => {
     const amount = e.target.value;
-    setMoney(amount);
+    if(amount !== ""){
+      setMoney(amount);
+    }
+    else{
+      setMoney("")
+    }
     
     if (!amount.trim()) {
-      
+      setLoading(true)
       try {
         const token = localStorage.getItem("jwtToken");
         const response = await axios.get(
@@ -213,10 +248,12 @@ function UserTable() {
       } catch (err) {
         console.log(err);
       }
+      setLoading(false)
       return;  // Exit the function if input is empty
     }
   
     // Existing functionality for when amount is provided
+    setLoading(true)
     try {
       const token = localStorage.getItem("jwtToken");
       const response = await axios.post(
@@ -229,12 +266,15 @@ function UserTable() {
           },
         }
       );
+      
       setData(response.data.selectedBills);
     } catch (err) {
       console.error("Error fetching bills by amount:", err);
     }
+    setLoading(false)
   };
   
+  console.log(text,user,status,gstType)
 
   function calculateBills() {
     reversedData.forEach((data1) => {
@@ -278,7 +318,7 @@ function UserTable() {
                   setSorted(false);
                 }
               }}
-              className="p-2 fw-bold form-control me-2"
+              className="p-2 fw-bold form-control"
               type="search"
               placeholder="Search Bills"
               aria-label="Search"
@@ -294,7 +334,7 @@ function UserTable() {
             <input
               onChange={handleMoneySearch}
               value={money}
-              className="p-2 fw-bold form-control me-2"
+              className="p-2 fw-bold form-control"
               type="number"
               placeholder="search by Amount"
               aria-label="Search by Amount"
@@ -325,6 +365,8 @@ function UserTable() {
             <option value="accepted">accepted</option>
             <option value="rejected">rejected</option>
           </select>
+
+
           <select
             className="custom-select p-2 rounded-2 ms-auto col-10 col-sm-10 col-md-3 me-auto mb-4"
             onChange={(e) => {
@@ -347,74 +389,28 @@ function UserTable() {
               );
             })}
           </select>
+
+          <select
+            className="custom-select p-2 rounded-2 ms-auto col-10 col-sm-10 col-md-3 me-auto mb-4"
+            onChange={(e) => {
+              setGstType(e.target.value);
+              if (e.target.value == "All Bills") {
+                setSorted(true);
+              } else {
+                setSorted(false);
+              }
+            }}
+          >
+            <option value="All Bills" selected>
+              Sort By Bill Type
+            </option>
+            <option value="GST">GST</option>
+            <option value="Non GST">Non GST</option>
+          </select>
+          
         </div>
       </div>
-      {/* {sorted && (
-        <div className="ms-auto me-auto container-md d-flex justify-content-evenly row">
-          <div className="flex-1 ms-auto me-auto upload-outer-div col-10 col-sm-10 mt-5 justify-content-center align-items-center">
-            <p className="fs-4 fw-bold" style={{ color: "rgb(12,0,218)" }}>
-              Total Bills:{" "}
-              <span className="text-white fw-bold fs-4">
-                {pending + accepted + rejected}
-              </span>
-            </p>
-            <p className="fs-4 fw-bold" style={{ color: "rgb(12,0,218)" }}>
-              Total Amount:{" "}
-              <span className="text-white fw-bold fs-4">
-                &#8377; {acceptedBill + pendingBill + rejectedBill}
-              </span>
-            </p>
-          </div>
-          <div className="upload-outer-div col-10 col-md-4">
-            <p
-              className="fs-5 fst-italic"
-              style={{ color: "rgb(237, 221, 74)" }}
-            >
-              Pending Bills:{" "}
-              <span className="text-white fw-bold fs-4">{pending}</span>
-            </p>
-            <p
-              className="fs-5 fst-italic"
-              style={{ color: "rgb(96, 237, 74)" }}
-            >
-              Accepted Bills:{" "}
-              <span className="text-white fw-bold fs-4">{accepted}</span>
-            </p>
-            <p className="fs-5 fst-italic" style={{ color: "red" }}>
-              Rejected Bills:{" "}
-              <span className="text-white fw-bold fs-4">{rejected}</span>
-            </p>
-          </div>
-          <div className="upload-outer-div col-md-4 col-10">
-            <div className="flex-1 ms-atuo">
-              <p
-                className="fs-5 fst-italic"
-                style={{ color: "rgb(237, 221, 74)" }}
-              >
-                Pending Amount:{" "}
-                <span className="text-white fw-bold fs-4">
-                  &#8377; {pendingBill}
-                </span>
-              </p>
-              <p
-                className="fs-5 fst-italic"
-                style={{ color: "rgb(96, 237, 74)" }}
-              >
-                Accepted Amount:{" "}
-                <span className="text-white fw-bold fs-4">
-                  &#8377; {acceptedBill}
-                </span>
-              </p>
-              <p className="fs-5 fst-italic" style={{ color: "red" }}>
-                Rejected Amount:{" "}
-                <span className="text-white fw-bold fs-4">
-                  &#8377; {rejectedBill}
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
-      )} */}
+
 
         {sorted && (
           <div className="ms-auto me-auto container-md d-flex flex-wrap row mt-4 text-nowrap mb-5">
@@ -442,172 +438,16 @@ function UserTable() {
                   }}
                 >
                   <div className={`fw-bold ${styles.cardTitle}`}>{card.title}</div>
-                  <div className={`text-black ${styles.cardValue}`} >{card.value}</div>
+                  <div className={`text-black  ${styles.cardValue}`} style={{fontWeight:700}}>{card.value}</div>
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        
-  
-
-      {/* <table className="table-striped table-hover w-80 container mb-5">
-        <tr className="row heading py-5 d-none d-sm-flex">
-          <th
-            data-cell="SNO"
-            className="col-1 text-center heading d-none d-sm-inline fs-5"
-          >
-            SN0
-          </th>
-          <th
-            data-cell="Name"
-            className="fs-5 col-2 text-center heading d-none d-sm-inline"
-          >
-            NAME
-          </th>
-          <th
-            data-cell="UserName"
-            className="fs-5 col-2 text-center heading d-none d-sm-inline"
-          >
-            UPLOADED BY
-          </th>
-          <th
-            data-cell="Amount"
-            className="fs-5 col-2 text-center heading d-none d-sm-inline"
-          >
-            AMOUNT
-          </th>
-          <th
-            data-cell="Type"
-            className="fs-5 col-2 text-center heading d-none d-sm-inline"
-          >
-            TYPE
-          </th>
-          <th
-            data-cell="status"
-            className="fs-5 col-3 text-center heading d-none d-sm-inline"
-          >
-            STATUS
-          </th>
-        </tr>
-        <hr id="hr1" />
-        <tbody>
-          {reversedData.map((data1, index) => {
-            return (
-              <>
-                {(data1.status === status || status === "All Bills") &&
-                (data1.name.toLowerCase().includes(text.toLowerCase()) ||
-                  data1.type.toLowerCase().includes(text.toLowerCase())) &&
-                data1.uploadedBy.includes(user) ? (
-                  <>
-                    <tr className="row" key={index}>
-                      <td
-                        data-cell="SNo"
-                        className="col-1 text-center d-none d-md-inline d-sm-none"
-                      >
-                        {index + 1}
-                      </td>
-                      <td
-                        data-cell="Name"
-                        className="col-xs-8 col-sm-4 col-md-2 text-center"
-                      >
-                        {data1.name}
-                      </td>
-                      <td
-                        data-cell="Name"
-                        className="col-xs-8 col-sm-4 col-md-2 text-center"
-                      >
-                        {data1.uploadedBy}
-                      </td>
-                      <td
-                        data-cell="Amount"
-                        className="col-xs-8 col-sm-4 col-md-2 text-center"
-                      >
-                        {data1.amount}
-                      </td>
-                      <td
-                        data-cell="Type"
-                        className="col-xs-8 col-sm-4 col-md-2 text-center"
-                      >
-                        {data1.type}
-                      </td>
-                      {data1.status != "pending" && (
-                        <td
-                          data-cell="Status"
-                          className={`col-xs-8 col-sm-4 col-md-3 text-center d-sm-inline ${data1.status}`}
-                        >
-                          {data1.status}
-                        </td>
-                      )}
-                      {data1.status == "pending" && (
-                        <td
-                          data-cell="Status"
-                          className={`col-xs-8 col-sm-4 col-md-3 text-center d-sm-inline ${data1.status}`}
-                        >
-                          <select
-                            name="status"
-                            id="status"
-                            className="custom-select w-50 ms-auto me-auto"
-                            onClick={(e) => {
-                              handleStatus(e, data1._id);
-                            }}
-                          >
-                            <option
-                              value="pending"
-                              className="pending fs-6 p-0"
-                              selected
-                            >
-                              pending
-                            </option>
-                            <option
-                              value="accepted"
-                              className="accepted fs-6 p-0"
-                            >
-                              Accept
-                            </option>
-                            <option
-                              value="rejected"
-                              className="rejected fs-6 p-0"
-                            >
-                              Reject
-                            </option>
-                            <option
-                              value="deleted"
-                              className="rejected fs-6 p-0"
-                            >
-                              Delete Bill
-                            </option>
-                          </select>
-                        </td>
-                      )}
-
-                      <td
-                        data-cell="image"
-                        className="col-12 text-center d-sm-inline"
-                      >
-                        <img
-                          className="ms-auto me-auto"
-                          src={data1.image}
-                          alt=""
-                          width="300vw"
-                          onClick={() => handleImageClick(data1.image)}
-                        />
-                      </td>
-                    </tr>
-                    <hr id="hr" />
-                  </>
-                ) : (
-                  <></>
-                )}
-              </>
-            );
-          })}
-        </tbody>
-      </table> */}
-
       
             <div className={`${styles.tableContainer} w-100 container mb-5 p-2`}>
+              {Loading ? <p className="text-responsive text-white text-center">Loading...</p> :
               <table className={styles.table}>
                 <thead className={styles.tableHeader}>
                   <tr>
@@ -635,9 +475,11 @@ function UserTable() {
                         : 'rgb(255,0,0)';
       
                     return (
-                      (data1.status === status || status === 'All Bills') &&
-                      (data1.name.toLowerCase().includes(text.toLowerCase()) ||
-                        data1?.billType?.toLowerCase().includes(text.toLowerCase())) && (
+                      // (data1.status === status || status === 'All Bills') &&
+                      // (data1.billType === gstType || gstType === 'All Bills') &&
+                      // data1.name.toLowerCase().includes(text.toLowerCase()) &&
+                        // data1?.name?.toLowerCase().includes(user.toLowerCase())
+                        //  && (
                         <tr key={index}>
                           <td className={styles.tableDataCell}>{indexOfFirstItem + index + 1}</td>
                           <td className={styles.tableDataCell}>{data1.name}</td>
@@ -672,7 +514,8 @@ function UserTable() {
                           {data1.status != "pending" && (
                         <td
                           data-cell="Status"
-                          className={` ${data1.status} ${styles.tableDataCell}`}
+                          className={`${data1.status} ${styles.Statustxt}`}
+                          style={{color:statusColor}}
                         >
                           {data1.status}
                         </td>
@@ -680,7 +523,8 @@ function UserTable() {
                       {data1.status == "pending" && (
                         <td
                           data-cell="Status"
-                          className={`${data1.status} ${styles.tableDataCell}`}
+                          className={`${data1.status} ${styles.Statustxt}`}
+                          style={{color:statusColor}}
                         >
                           <select
                             name="status"
@@ -724,11 +568,12 @@ function UserTable() {
                       )}
                           
                         </tr>
-                      )
+                      // )
                     );
                   })}
                 </tbody>
               </table>
+}
             </div>
 
             {openPreview && <PreviewImage image={selectedImage} onClose={() => setOpenPreview(false)} />}
@@ -749,7 +594,8 @@ function UserTable() {
        <button
           className="btn btn-primary"
           onClick={nextPage}
-          disabled={indexOfLastItem >= data.length}
+          // disabled={indexOfLastItem >= data.length}
+          disabled={reversedData.length <= 15 || currentItems.length < 15}
         >
            Next <span  style={{fontSize:'15px',fontWeight:'bolder'}}><GrLinkNext/></span>
         </button>

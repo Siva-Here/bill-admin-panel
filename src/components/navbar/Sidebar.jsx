@@ -118,24 +118,24 @@ function Sidebar() {
               </li>
             </ul>
           </li> */}
-          <li className="sidebar-item mt-3" >
+          {/* <li className="sidebar-item mt-3" >
             <NavLink to="/contact" className="sidebar-link" onClick={()=>{setIsExpanded(false)}}>
               <i className="lni lni-popup"></i>
               <span className="ms-3">Contact Us</span>
             </NavLink>
-          </li>
-          <li className="sidebar-item mt-3" >
+          </li> */}
+          {/* <li className="sidebar-item mt-3" >
             <a href="#" className="sidebar-link">
               <i className="lni lni-popup"></i>
               <span className="ms-3">Notification</span>
             </a>
-          </li>
-          <li className="sidebar-item mt-3" >
+          </li> */}
+          {/* <li className="sidebar-item mt-3" >
             <a href="#" className="sidebar-link">
               <i className="lni lni-cog"></i>
               <span className="ms-3">Setting</span>
             </a>
-          </li>
+          </li> */}
         </ul>
         <div
           className={`sidebar-footer mb-3 wrapper ${

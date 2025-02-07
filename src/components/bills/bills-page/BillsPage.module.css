@@ -141,6 +141,13 @@
     /* background-color: white; */
     border: 1px solid #ddd;
   }
+
+  .Statustxt{
+    text-align: center;
+    padding: 10px;
+    /* background-color: white; */
+    border: 1px solid #ddd;
+  }
   
   .image {
     width: 100px;
