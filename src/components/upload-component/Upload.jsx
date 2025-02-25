@@ -396,9 +396,9 @@ function Upload() {
                 <label className="m-2 me-4  col-11 col-sm-6 col-md-7 col-lg-8">Bill Amount:</label>
                 <input
                   className="ms-2 col-11 col-sm-6 col-md-7 col-lg-8"
-                  type="text"
+                  type="number"
                   value={billAmount}
-                  onChange={(e) => setBillAmount(e.target.value)}
+                  onChange={(e) => setBillAmount(e.target.value.toString())}
                   required
                 />
                 {errors.billAmount && <span className="text-danger">{errors.billAmount}</span>}
