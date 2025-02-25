@@ -13,7 +13,7 @@
 //         const token = localStorage.getItem('jwtToken');
 //         console.log(token);
 //         const response = await axios.get(
-//           'http://localhost:8000/admin/fetchAllBills',
+//           'https://bill-server-hiq9.onrender.com/admin/fetchAllBills',
 //           // { username: localStorage.getItem('username') },
 //           {
 //             headers: {
@@ -127,7 +127,7 @@ function AdminTable() {
       try {
         const token = localStorage.getItem('jwtToken');
         console.log(token);
-        const response = await axios.get('http://localhost:8000/admin/fetchAllBills', {
+        const response = await axios.get('https://bill-server-hiq9.onrender.com/admin/fetchAllBills', {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

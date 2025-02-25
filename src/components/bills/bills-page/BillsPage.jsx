@@ -257,7 +257,7 @@ function UserTable() {
     try {
       const token = localStorage.getItem("jwtToken");
       const response = await axios.post(
-        `http://localhost:8000/admin/search`,
+        `https://bill-server-hiq9.onrender.com/admin/search`,
         { amount: Number(amount) },
         {
           headers: {
@@ -412,7 +412,7 @@ function UserTable() {
       </div>
 
 
-        {sorted && (
+        (
           <div className="ms-auto me-auto container-md d-flex flex-wrap row mt-4 text-nowrap mb-5">
             {[
               { title: 'Total Bills', value: pending + accepted + rejected, color: 'blue' },
@@ -443,7 +443,7 @@ function UserTable() {
               </div>
             ))}
           </div>
-        )}
+        )
 
       
             <div className={`${styles.tableContainer} w-100 container mb-5 p-2`}>

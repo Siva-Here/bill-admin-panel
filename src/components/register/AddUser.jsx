@@ -113,7 +113,7 @@ const AddUser = () => {
       console.log(token);
 
       const response = await axios.post(
-        "http://localhost:8000/admin/addUser",
+        "https://bill-server-hiq9.onrender.com/admin/addUser",
         formData,
         {
           headers: {
@@ -134,7 +134,8 @@ const AddUser = () => {
       });
     } catch (error) {
       console.error("Error:", error);
-      toast.error("An error occurred while registering.");
+      toast.error(error.response.data);
+
       setIsLoading(false);
     }
   };
