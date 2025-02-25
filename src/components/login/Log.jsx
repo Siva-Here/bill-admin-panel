@@ -58,7 +58,7 @@ const Log = () => {
       return;
     }
 
-    fetch("http://bill-server-hiq9.onrender.com/admin/login", {
+    fetch("https://bill-server-hiq9.onrender.com/admin/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
