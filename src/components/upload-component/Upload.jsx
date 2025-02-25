@@ -601,6 +601,7 @@ function Upload() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!validateForm()){
       // setErrors({ ...errors });
       console.log("yyyey")
