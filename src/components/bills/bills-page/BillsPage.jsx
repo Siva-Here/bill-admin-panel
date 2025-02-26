@@ -438,7 +438,8 @@ function UserTable() {
                   }}
                 >
                   <div className={`fw-bold ${styles.cardTitle}`}>{card.title}</div>
-                  <div className={`text-black  ${styles.cardValue}`} style={{fontWeight:700}}>{card.value}</div>
+                  <div className={`text-black  ${styles.cardValue}`} style={{fontWeight:700}}>{Loading ? "Loading..." : card.value}</div>
+                  {/* <div className={`text-black ${styles.cardValue}`} >{loading ? "Loading..." : card.value}</div> */}
                 </div>
               </div>
             ))}
