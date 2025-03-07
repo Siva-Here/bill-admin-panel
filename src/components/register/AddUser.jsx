@@ -36,15 +36,7 @@ const AddUser = () => {
  
   
 
-  // Email validation
-  // const validateEmail = (email) => {
-  //   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  //   if (!emailRegex.test(email)) {
-  //     setErrors({ ...errors, email: "Invalid email format" });
-  //   } else {
-  //     setErrors({ ...errors, email: "" });
-  //   }
-  // };
+ 
 
   const validateEmail = (email) => {
     // Regex for email validation as per the given criteria
@@ -114,6 +106,7 @@ const AddUser = () => {
 
       const response = await axios.post(
         "https://bill-server-hiq9.onrender.com/admin/addUser",
+        // "http://localhost:8000/admin/addUser",
         formData,
         {
           headers: {

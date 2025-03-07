@@ -1,10 +1,198 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
+// import { MdEmail } from "react-icons/md";
+// import { RiLockPasswordFill, RiAccountCircleFill } from "react-icons/ri";
+// import { GiConfirmed } from "react-icons/gi";
+// import axios from "axios";
+// import { BsEye, BsEyeSlash } from "react-icons/bs";
+// import { toast, ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+// import "./register.css";
+
+// const AddUser = () => {
+//   const [isRegistered, setIsRegistered] = useState(false);
+//   const [formData, setFormData] = useState({
+//     username: "",
+//     password: "",
+//     confirmPassword: "",
+//   });
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData({ ...formData, [name]: value });
+//   };
+
+//   const togglePasswordVisibility = () => {
+//     setShowPassword(!showPassword);
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setIsLoading(true);
+
+//     const passwordRegex = /.*/;
+//     // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
+
+//     if (!passwordRegex.test(formData.password)) {
+//       toast.error(
+//         "Password must be 8-10 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character."
+//       );
+//       setIsLoading(false);
+//       return;
+//     }
+
+//     if (formData.password !== formData.confirmPassword) {
+//       toast.error("Passwords do not match.");
+//       setIsLoading(false);
+//       return;
+//     }
+
+//     try {
+//       const token = localStorage.getItem("jwtToken");
+//       console.log(token);
+
+//       const response = await axios.post(
+//         // "https://bill-server-hiq9.onrender.com/admin/register",
+//         "http://localhost:8000/admin/register",
+//         formData,
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
+//       toast.success("Registration successful!");
+//       setIsRegistered(true);
+//       setIsLoading(false);
+//       setFormData({
+//         username: "",
+//         password: "",
+//         confirmPassword: "",
+//       });
+//     } catch (error) {
+//       console.error("Error:", error);
+//       toast.error("An error occurred while registering.");
+//       setIsLoading(false);
+//     }
+//   };
+
+//   return (
+//     <>
+//       <ToastContainer />
+//       <div className="px-4 py-3 rounded-2 siva h-100">
+//         <h1 className="text-center text-white">
+//           <RiAccountCircleFill /> Register New Admin
+//         </h1>
+//         <br />
+//         <form onSubmit={handleSubmit}>
+//           <div className="mb-3">
+//             <MdEmail className="text-white" />
+//             <label
+//               htmlFor="exampleInputEmail1"
+//               className="form-label text-white"
+//               style={{marginLeft:'12px'}}
+//             >
+//               Admin Name
+//             </label>
+//             <input
+//               type="text"
+//               className="form-control"
+//               id="exampleInputEmail1"
+//               name="username"
+//               value={formData.username}
+//               onChange={handleChange}
+//               required
+//             />
+//             <div id="emailHelp" className="form-text text-white pt-1 pb-1">
+//               We'll never share your username with anyone else.
+//             </div>
+//           </div>
+//           <div className="mb-4">
+//             <RiLockPasswordFill className="text-white" />
+//             <label
+//               htmlFor="exampleInputPassword1"
+//               className="form-label text-white pt-1 pb-1"
+//               style={{marginLeft:'12px'}}
+//             >
+//               Password
+//             </label>
+//             <div className="input-group">
+//               <input
+//                 type={showPassword ? "text" : "password"}
+//                 className="form-control"
+//                 id="exampleInputPassword1"
+//                 name="password"
+//                 value={formData.password}
+//                 onChange={handleChange}
+//                 required
+//               />
+//               <button
+//                 className="btn btn-outline-secondary"
+//                 type="button"
+//                 onClick={togglePasswordVisibility}
+//               >
+//                 {showPassword ? (
+//                   <BsEyeSlash className="text-white" />
+//                 ) : (
+//                   <BsEye className="text-white" />
+//                 )}
+//               </button>
+//             </div>
+//           </div>
+//           <div className="mb-3">
+//             <GiConfirmed className="text-white" />
+//             <label
+//               htmlFor="exampleInputConfirmPassword1"
+//               className="form-label text-white "
+//               style={{marginLeft:'12px'}}
+//             >
+//               Confirm Password
+//             </label>
+//             <input
+//               type="password"
+//               className="form-control"
+//               id="exampleInputConfirmPassword1"
+//               name="confirmPassword"
+//               value={formData.confirmPassword}
+//               onChange={handleChange}
+//               required
+//             />
+//           </div>
+//           <div className="justify-content-center d-flex ps-auto pe-auto mb-2 pt-3">
+//             <button
+//               type="submit"
+//               className="btn btn-outline-primary ms-auto me-auto"
+//               disabled={isLoading}
+//             >
+//               {isLoading ? (
+//                 <div className="spinner-border text-light" role="status">
+//                   <span className="visually-hidden">Loading...</span>
+//                 </div>
+//               ) : (
+//                 "Submit"
+//               )}
+//             </button>
+//           </div>
+//         </form>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default AddUser;
+
+
+
+import React, { useState, useEffect } from "react";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill, RiAccountCircleFill } from "react-icons/ri";
 import { GiConfirmed } from "react-icons/gi";
 import axios from "axios";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-import { toast, ToastContainer } from "react-toastify";
+import { FiPhone } from "react-icons/fi";
+import { toast, ToastContainer } from "react-toastify"; // Add ToastContainer here
 import "react-toastify/dist/ReactToastify.css";
 import "./register.css";
 
@@ -12,16 +200,48 @@ const AddUser = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
+    mobile:"",
+    email:"",
     password: "",
     confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    mobile: "",
+    email: "",
+  });
+
+  const validateMobile = (mobile) => {
+    if (!/^\d+$/.test(mobile)) {
+      setErrors({ ...errors, mobile: "please enter digits only" });
+    } else {
+      setErrors({ ...errors, mobile: "" });
+    }
+  };
+
+ 
+  
+
+ 
+
+  const validateEmail = (email) => {
+    // Regex for email validation as per the given criteria
+    const emailRegex = /^[nN]\d{6}@rguktn\.ac\.in$/;
+    if (!emailRegex.test(email)) {
+      setErrors({ ...errors, email: "please enter valid college mail" });
+    } else {
+      setErrors({ ...errors, email: "" });
+    }
+  };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  console.log(formData)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -30,6 +250,25 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    // validateMobile(formData.mobile);
+
+    if(formData.mobile.length < 10){
+      setErrors((prevErrors) => ({ ...prevErrors, mobile: "Mobile number must be 10 digits" }));
+    setIsLoading(false);
+    return; 
+    }
+    
+    validateMobile(formData.mobile);
+    
+
+    validateEmail(formData.email);
+
+    // Check for errors before submitting the form
+    if (errors.mobile || errors.email) {
+      setIsLoading(false);
+      return;
+    }
 
     const passwordRegex = /.*/;
     // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
@@ -53,6 +292,7 @@ const AddUser = () => {
       console.log(token);
 
       const response = await axios.post(
+        // "http://localhost:8000/admin/register",
         "https://bill-server-hiq9.onrender.com/admin/register",
         formData,
         {
@@ -67,12 +307,15 @@ const AddUser = () => {
       setIsLoading(false);
       setFormData({
         username: "",
+        mobile:"",
+        email: "",
         password: "",
         confirmPassword: "",
       });
     } catch (error) {
-      console.error("Error:", error);
-      toast.error("An error occurred while registering.");
+      console.error("Error is:", error.response.data);
+      toast.error(error.response.data);
+
       setIsLoading(false);
     }
   };
@@ -80,20 +323,22 @@ const AddUser = () => {
   return (
     <>
       <ToastContainer />
-      <div className="px-4 py-3 rounded-2 siva h-100">
+      <div className="center-container  " >
+      <div className="p-3  px-md-4 py-md-5 py-lg-3 rounded-2 sivah h-100 mt-3 mb-3 mt-md-0">
         <h1 className="text-center text-white">
-          <RiAccountCircleFill /> Register New Admin
+          <RiAccountCircleFill /> Register Admin
         </h1>
         <br />
         <form onSubmit={handleSubmit}>
+          {/* Your form inputs */}
           <div className="mb-3">
             <MdEmail className="text-white" />
             <label
               htmlFor="exampleInputEmail1"
               className="form-label text-white"
-              style={{marginLeft:'12px'}}
+              style={{marginLeft:'15px'}}
             >
-              Admin Name
+              User Name
             </label>
             <input
               type="text"
@@ -104,16 +349,72 @@ const AddUser = () => {
               onChange={handleChange}
               required
             />
-            <div id="emailHelp" className="form-text text-white pt-1 pb-1">
+            <div id="emailHelp" className="form-text text-white pt-2 pb-1">
               We'll never share your username with anyone else.
             </div>
           </div>
+
+          {/* Email */}
+          <div className="mb-4">
+            <MdEmail className="text-white" />
+            <label htmlFor="email" className="form-label text-white" style={{marginLeft:'15px'}}>
+              Email
+            </label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              name="email"
+              value={formData.email}
+              // onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                validateEmail(e.target.value); // Validate email on change
+              }}
+              required
+            />
+             {errors.email && (
+                <div style={{ color: 'red', fontSize: '0.875rem', marginTop: '5px' }}>
+                  {errors.email}
+                </div>
+              )}
+          </div>
+
+          {/* Mobile Number */}
+          <div className="mb-4">
+            < FiPhone className="text-white" />
+            <label htmlFor="mobile" className="form-label text-white" style={{marginLeft:'15px'}}>
+              Mobile Number
+            </label>
+            <input
+              type="tel"
+              className="form-control"
+              id="mobile"
+              name="mobile"
+              value={formData.mobile}
+              onChange={(e) => {
+                handleChange(e);
+                validateMobile(e.target.value);
+              }
+              }
+              maxLength={10}
+              inputMode="numeric" // Ensures mobile keyboards show numbers
+              pattern="[0-9]*"
+              required
+            />
+             {errors.mobile && (
+                <div style={{ color: 'red', fontSize: '0.875rem', marginTop: '5px' }}>
+                  {errors.mobile}
+                </div>
+              )}
+          </div>
+
           <div className="mb-4">
             <RiLockPasswordFill className="text-white" />
             <label
               htmlFor="exampleInputPassword1"
-              className="form-label text-white pt-1 pb-1"
-              style={{marginLeft:'12px'}}
+              className="form-label text-white pb-1"
+              style={{marginLeft:'15px'}}
             >
               Password
             </label>
@@ -140,12 +441,12 @@ const AddUser = () => {
               </button>
             </div>
           </div>
-          <div className="mb-3">
+          <div className="mb-4">
             <GiConfirmed className="text-white" />
             <label
               htmlFor="exampleInputConfirmPassword1"
-              className="form-label text-white "
-              style={{marginLeft:'12px'}}
+              className="form-label text-white"
+              style={{marginLeft:'15px'}}
             >
               Confirm Password
             </label>
@@ -159,10 +460,10 @@ const AddUser = () => {
               required
             />
           </div>
-          <div className="justify-content-center d-flex ps-auto pe-auto mb-2 pt-3">
+          <div className="justify-content-center d-flex ps-auto pe-auto">
             <button
               type="submit"
-              className="btn btn-outline-primary ms-auto me-auto"
+              className="btn btn-outline-primary ms-auto me-auto mt-2 "
               disabled={isLoading}
             >
               {isLoading ? (
@@ -175,6 +476,7 @@ const AddUser = () => {
             </button>
           </div>
         </form>
+      </div>
       </div>
     </>
   );
